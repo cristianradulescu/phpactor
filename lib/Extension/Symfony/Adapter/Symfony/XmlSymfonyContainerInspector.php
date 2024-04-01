@@ -54,7 +54,8 @@ class XmlSymfonyContainerInspector implements SymfonyContainerInspector
         }
 
         $parameters = [];
-        $parameterEls = $dom->query('//symfony:parameter');
+        $parameterEls = $dom->query('//symfony:parameter[(not(@type) or @type!="collection") and not(contains(@key, "env("))]');
+
         if (false === $parameterEls) {
             return [];
         }
@@ -62,6 +63,7 @@ class XmlSymfonyContainerInspector implements SymfonyContainerInspector
             if (!$parameterEl instanceof DOMElement) {
                 continue;
             }
+
             $key = $parameterEl->getAttribute('key');
             $value = $parameterEl->nodeValue;
             if (empty($key) || !is_string($value)) {
@@ -88,6 +90,24 @@ class XmlSymfonyContainerInspector implements SymfonyContainerInspector
         }
         foreach ($list as $serviceEl) {
             return $this->serviceFromEl($serviceEl);
+        }
+        return null;
+    }
+
+    public function parameter(string $key): ?SymfonyContainerParameter
+    {
+        $xpath = $this->loadXPath();
+        if (null === $xpath) {
+            return null;
+        }
+        $list = $xpath->query('//symfony:parameter[@key="'.$key.'" and (not(@type) or @type!="collection") and not(contains(@key, "env("))]');
+
+        if ($list === false) {
+            return null;
+        }
+
+        foreach ($list as $parameterEl) {
+            return $this->parameterFromEl($parameterEl);
         }
         return null;
     }
@@ -130,6 +150,23 @@ class XmlSymfonyContainerInspector implements SymfonyContainerInspector
         return new SymfonyContainerService(
             $id,
             TypeFactory::fromString($class),
+        );
+    }
+
+    private function parameterFromEl(DOMNode $parameterEl): ?SymfonyContainerParameter
+    {
+        if (!$parameterEl instanceof DOMElement) {
+            return null;
+        }
+
+        $key = $parameterEl->getAttribute('key');
+        $value = $parameterEl->nodeValue;
+        if (empty($key) || !is_string($value)) {
+            return null;
+        }
+        return new SymfonyContainerParameter(
+            $key,
+            TypeFactory::fromValue($value),
         );
     }
 }

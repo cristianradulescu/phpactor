@@ -32,4 +32,16 @@ class InMemorySymfonyContainerInspector implements SymfonyContainerInspector
 
         return null;
     }
+
+    public function parameter(string $id): ?SymfonyContainerParameter
+    {
+
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->id === $id) {
+                return $parameter;
+            }
+        }
+
+        return null;
+    }
 }
