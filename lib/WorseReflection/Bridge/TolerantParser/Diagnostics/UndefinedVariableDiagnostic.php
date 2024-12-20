@@ -27,14 +27,14 @@ class UndefinedVariableDiagnostic implements Diagnostic
 
     public function message(): string
     {
-        if(count($this->suggestions) === 0) {
+        if (count($this->suggestions) === 0) {
             return sprintf(
                 'Undefined variable "$%s"',
                 $this->varName
             );
         }
         $suggestString = implode('", "$', $this->suggestions);
-        if(count($this->suggestions) === 1) {
+        if (count($this->suggestions) === 1) {
             return sprintf(
                 'Undefined variable "$%s", did you mean "$%s"',
                 $this->varName,
@@ -63,5 +63,10 @@ class UndefinedVariableDiagnostic implements Diagnostic
     public function tags(): array
     {
         return [];
+    }
+
+    public function code(): string
+    {
+        return 'undefined_variable';
     }
 }

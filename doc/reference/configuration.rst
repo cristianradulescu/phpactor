@@ -894,7 +894,7 @@ FilePathResolverExtension
 """""""""""""""""""""""""""""""""""
 
 
-**Default**: ``"\/home\/mamazu\/packages\/phpactor\/phpactor"``
+**Default**: ``"\/home\/daniel\/www\/phpactor\/phpactor"``
 
 
 .. _param_file_path_resolver.app_name:
@@ -1276,6 +1276,32 @@ If applicable diagnostics should be "outsourced" to a different process
 **Default**: ``true``
 
 
+.. _param_language_server.diagnostic_exclude_paths:
+
+
+``language_server.diagnostic_exclude_paths``
+""""""""""""""""""""""""""""""""""""""""""""
+
+
+List of paths to exclude from diagnostics, e.g. `vendor/**/*`
+
+
+**Default**: ``[]``
+
+
+.. _param_language_server.diagnostic_ignore_codes:
+
+
+``language_server.diagnostic_ignore_codes``
+"""""""""""""""""""""""""""""""""""""""""""
+
+
+Ignore diagnostics that have the codes listed here, e.g. ["fix_namespace_class_name"]. The codes match those shown in the LSP client.
+
+
+**Default**: ``[]``
+
+
 .. _param_language_server.file_events:
 
 
@@ -1348,7 +1374,7 @@ Amount of time (in milliseconds) to wait before responding to a shutdown notific
 Internal use only - name path to Phpactor binary
 
 
-**Default**: ``"\/home\/mamazu\/packages\/phpactor\/phpactor\/lib\/Extension\/LanguageServer\/..\/..\/..\/bin\/phpactor"``
+**Default**: ``"\/home\/daniel\/www\/phpactor\/phpactor\/lib\/Extension\/LanguageServer\/..\/..\/..\/bin\/phpactor"``
 
 
 .. _param_language_server.self_destruct_timeout:
@@ -1854,6 +1880,19 @@ Override the PHPStan memory limit
 
 
 **Default**: ``null``
+
+
+.. _param_language_server_phpstan.tmp_file_disabled:
+
+
+``language_server_phpstan.tmp_file_disabled``
+"""""""""""""""""""""""""""""""""""""""""""""
+
+
+Disable the use of temporary files when. This prevents as-you-type diagnostics, but ensures paths in phpstan config are respected. See https://github.com/phpactor/phpactor/issues/2763
+
+
+**Default**: ``false``
 
 
 .. _LanguageServerPsalmExtension:

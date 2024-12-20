@@ -7,6 +7,7 @@ use Iterator;
 use RegexIterator;
 use ReturnTypeWillChange;
 use SplFileInfo;
+use Symfony\Component\Filesystem\Path;
 use Traversable;
 use Webmozart\Glob\Glob;
 use ArrayIterator;
@@ -118,7 +119,7 @@ class FileList implements Iterator
                 }
 
                 $compare = strcmp($pathPartA, $partsB[$i]);
-                if($compare !== 0) {
+                if ($compare !== 0) {
                     return $compare;
                 }
             }
@@ -127,8 +128,15 @@ class FileList implements Iterator
         });
 
         return $this->filter(function (SplFileInfo $info) use ($inclusionMap): bool {
-            foreach($inclusionMap as $glob => $isIncluded) {
-                if (Glob::match($info->getPathname(), $glob)) {
+            foreach ($inclusionMap as $glob => $isIncluded) {
+                $path = $info->getPathname();
+
+                // do not include the scheme in comparisons
+                if ($schemePos = strpos($path, '://')) {
+                    $path = substr($path, $schemePos + 3);
+                }
+
+                if (Glob::match($path, $glob)) {
                     return $isIncluded;
                 }
             }
