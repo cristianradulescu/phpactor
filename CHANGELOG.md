@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## master
+
+Features:
+
+  - Support new expression without parenthesis #2811
+  - Support vscode evaluatable expressions #2905 @zobo
+
 ## 2024-11-28.1
 
 Bug fixes:
